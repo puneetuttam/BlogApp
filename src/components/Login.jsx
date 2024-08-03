@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Login as authLogin } from "../store/authSlice";
+import { login as authLogin } from "../store/authSlice";
 import { Button, Input, Logo } from "./index";
 import authService, { AuthService } from "../appwrite/auth";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-const Login = () => {
+function Login() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { register, handleSubmit } = useForm();
-    const [error, setError] = useState();
+    const [error, setError] = useState("");
 
-    const login = async () => {
+    const login = async (data) => {
         setError("");
         try {
             const session = await authService.login(data);
@@ -21,7 +21,7 @@ const Login = () => {
                 navigate("/");
             }
         } catch (err) {
-            console.log(err);
+            setError(err);
         }
     };
     return (
@@ -74,12 +74,14 @@ const Login = () => {
                             {...register("password", { required: true })}
                         />
 
-                        <Button type='submit' className='w-full'>Sign In</Button>
+                        <Button type="submit" className="w-full">
+                            Sign In
+                        </Button>
                     </div>
                 </form>
             </div>
         </div>
     );
-};
+}
 
 export default Login;

@@ -1,10 +1,10 @@
-import conf from "../conf/conf";
+import conf from "../conf/conf.js";
 import { Client, ID, Databases, Storage, Query } from "appwrite";
 
 export class Service {
     client = new Client();
     databases;
-    buckets;
+    bucket;
 
     constructor() {
         this.client
@@ -14,7 +14,7 @@ export class Service {
         this.bucket = new Storage(this.client);
     }
 
-    async createPost({ slug, title, content, featuredImage, status, userId }) {
+    async createPost({ title, slug, content, featuredImage, status, userId }) {
         try {
             return (
                 await this.databases.createDocument(
@@ -24,7 +24,9 @@ export class Service {
                 slug,
                 { title, content, featuredImage, status, userId }
             );
-        } catch (err) {}
+        } catch (err) {
+            console.log("Appwrite serive :: createPost :: error", error);
+        }
     }
     async updatePost(slug, { title, content, featuredImage, status }) {
         try {
